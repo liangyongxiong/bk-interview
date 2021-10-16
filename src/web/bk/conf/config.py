@@ -1,0 +1,5 @@
+# coding=utf-8
+
+FASTAPI_DEBUG = True
+FASTAPI_ENABLE_GZIP = True
+FASTAPI_ENABLE_CORS = True
