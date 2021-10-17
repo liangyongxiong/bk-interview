@@ -60,6 +60,12 @@ class MySQLManager(BaseManager):
             if not os.path.exists(volume_path):
                 break
 
+        try:
+            os.makedirs(volume_path)
+            os.chmod(volume_path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
+        except PermissionError:
+            raise ServiceException('容器实例存储目录创建失败')
+
         self.generate_config_file(config, volume_path)
 
         try:

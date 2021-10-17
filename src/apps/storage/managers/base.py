@@ -37,7 +37,7 @@ class BaseManager:
         try:
             self.docker_client = docker.DockerClient(base_url=settings.DOCKER_BASE_URL)
         except docker.errors.DockerException:
-            pass
+            self.logger.error('Docker client connection fails.')
 
     def list(self):
         containers = []

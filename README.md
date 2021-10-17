@@ -25,7 +25,15 @@
 
 ## 项目架构图
 
+[![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcbiAgICBBKChDbGllbnQpKSAtLT58UkVTVCBBUEl8IEIoRmFzdEFQSSlcbiAgICBCIC0tPiBDKFJlZGlzIE1hbmFnZXIpXG4gICAgQiAtLT4gRChNeVNRTCBNYW5hZ2VyKVxuICAgIEMgLS0-IEVbRG9ja2VyIFNlcnZpY2VdXG4gICAgRCAtLT4gRVtEb2NrZXIgU2VydmljZV1cbiAgICBFIC0tPiBGW0ZpbGUgU3lzdGVtXVxuICAgICIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZ3JhcGggTFJcbiAgICBBKChDbGllbnQpKSAtLT58UkVTVCBBUEl8IEIoRmFzdEFQSSlcbiAgICBCIC0tPiBDKFJlZGlzIE1hbmFnZXIpXG4gICAgQiAtLT4gRChNeVNRTCBNYW5hZ2VyKVxuICAgIEMgLS0-IEVbRG9ja2VyIFNlcnZpY2VdXG4gICAgRCAtLT4gRVtEb2NrZXIgU2VydmljZV1cbiAgICBFIC0tPiBGW0ZpbGUgU3lzdGVtXVxuICAgICIsIm1lcm1haWQiOiJ7XG4gIFwidGhlbWVcIjogXCJkZWZhdWx0XCJcbn0iLCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)
 
+存储资源分配系统使用FastAPI构建Web服务，向前端提供REST API，后端基于系统中的Docker服务，进行Redis与MySQL存储资源实例的`查询/创建/删除`操作，容器实例的持久化数据保存在文件系统中。
+
+## 下载项目代码
+
+```bash
+git clone https://github.com/liangyongxiong/bk-interview.git
+```
 
 ## 代码目录结构
 
@@ -67,7 +75,7 @@ PROJECT/
 # docker服务连接
 DOCKER_BASE_URL = 'unix:///var/run/docker.sock'
 # docker实例磁盘根目录
-DOCKER_VOLUME_ROOT = '/home/lyx/interview'
+DOCKER_VOLUME_ROOT = '/tmp/bk-interview'
 # docker宿主机IP
 DOCKER_HOST_IP = '127.0.0.1'
 ```
@@ -85,9 +93,9 @@ FASTAPI_ENABLE_CORS = True
 
 ## 运行环境约束
 
-- 操作系统为Linux
-- 已安装[docker](https://docs.docker.com/engine/install/)
-- 已安装[Python 3.9](https://www.python.org/downloads/release/python-397/)
+- 要求操作系统为Linux
+- 要求系统已安装[Docker](https://docs.docker.com/engine/install/)
+- 要求系统已安装[Python 3.9](https://www.python.org/downloads/release/python-397/)
 
 ## 下载docker镜像
 
@@ -115,29 +123,33 @@ python src/main.py fastapi --domain bk
 ### Redis
 
 | 功能                 | 请求方式 | REST API                                          |
-| -------------------- | -------- | ------------------------------------------------- |
-| 获取资源实例列表     | GET      | /api/storage/redis/instances                      |
-| 创建资源实例         | POST     | /api/storage/redis/instances                      |
-| 获取资源实例配置信息 | GET      | /api/storage/redis/instances/{instance_id}/config |
-| 删除资源实例         | DELETE   | /api/storage/redis/instances/{instance_id}        |
+| -------------------- | :------: | ------------------------------------------------- |
+| 获取资源实例列表     |   GET    | /api/storage/redis/instances                      |
+| 创建资源实例         |   POST   | /api/storage/redis/instances                      |
+| 获取资源实例配置信息 |   GET    | /api/storage/redis/instances/{instance_id}/config |
+| 删除资源实例         |  DELETE  | /api/storage/redis/instances/{instance_id}        |
 
-创建资源实例时，支持以下个性化配置：
+创建资源实例时，目前支持以下个性化配置：
 
 - maxmemory：最大占用内存空间（单位：byte）
 - maxclients：最大客户端连接数
-- appendfsync：系统写盘模式，支持always/everysec/no
+- appendfsync：系统写盘模式，支持`always/everysec/no`
 
 ### MySQL
 
 | 功能                 | 请求方式 | REST API                                          |
-| -------------------- | -------- | ------------------------------------------------- |
-| 获取资源实例列表     | GET      | /api/storage/mysql/instances                      |
-| 创建资源实例         | POST     | /api/storage/mysql/instances                      |
-| 获取资源实例配置信息 | GET      | /api/storage/mysql/instances/{instance_id}/config |
-| 删除资源实例         | DELETE   | /api/storage/mysql/instances/{instance_id}        |
+| -------------------- | :------: | ------------------------------------------------- |
+| 获取资源实例列表     |   GET    | /api/storage/mysql/instances                      |
+| 创建资源实例         |   POST   | /api/storage/mysql/instances                      |
+| 获取资源实例配置信息 |   GET    | /api/storage/mysql/instances/{instance_id}/config |
+| 删除资源实例         |  DELETE  | /api/storage/mysql/instances/{instance_id}        |
 
-创建资源实例时，支持以下个性化配置：
+创建资源实例时，目前支持以下个性化配置：
 
-- charset：服务端字符集，支持utf8mb4/latin1
-- binlog_format：binlog格式，支持STATEMENT/ROW/MIXED
+- charset：服务端字符集，支持`utf8mb4/latin1`
+- binlog_format：binlog格式，支持`STATEMENT/ROW/MIXED`
 
+## 思考：系统可演进能力
+
+1. 可使用持久化数据库，记录存储资源实例，支持分页查询
+2. 使用Celery定时检测各容器实例的运行状态，通过注册回调或WebSocket方式，告知用户
